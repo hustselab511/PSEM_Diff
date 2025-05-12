@@ -33,17 +33,17 @@ Before you can start using the MuSFId model, you need to install the following d
 
 
 ## Quick start
-1. Train stage1：
+1. Train stage1 Teacher Segment：
    ```bash
    cd stage1
    python unet_train.py
    
-2. Training the stage2：
+2. Training stage2 Student Pre-Encoding：
    ```bash
    cd stage1
    python reconstruct_train.py
 
-3. Training the stage3：
+3. Training stage3 Multiband Diffusion：
    ```bash
    cd stage1
    python diffusion_train.py
