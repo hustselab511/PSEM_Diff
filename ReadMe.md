@@ -1,4 +1,16 @@
-# PSEM-Diff Guide
+# PSEM-Diff
+
+PSEM-Diff is an innovative framework designed for high-fidelity conversion of Ballistocardiogram (BCG) signals to Electrocardiogram (ECG) signals.  The method effectively enhances cross-modal transformations through pre-encoding, multiband diffusion, and dynamic noise adjustment.
+
+## Key Features
+- **Extraction of ECG Physiological Event Temporal Semantics**: Improves cross-modal transformations by capturing and encoding meaningful ECG event semantics.
+- **Multi-band Diffusion**: Utilizes separate diffusion models for different frequency bands to enhance cross-modal semantic mapping and denoising.
+- **Dynamic Noise Adjustment**: Adapts noise levels dynamically based on the characteristics of different signal segments, improving reconstruction accuracy.
+- **Support for Downstream Tasks**: Enables applications such as identity recognition and atrial fibrillation (AF) detection.
+
+## Applications
+- **Identity Recognition**: Achieves high accuracy in distinguishing individual physiological patterns.
+- **Atrial Fibrillation Detection**: Facilitates early and non-invasive screening for cardiovascular abnormalities.
 
 ## Environment
 Before you can start using the MuSFId model, you need to install the following dependencies:
