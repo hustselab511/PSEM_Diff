@@ -56,9 +56,7 @@ def train(net, train_dataloader, valid_dataloader, device, num_epoch, lr):
 
         scheduler.step()
         train_loss = train_loss / len(train_dataloader)
-        time.sleep(0.03)
         print(f'Epoch [{epoch + 1}/{num_epoch}], Train Loss: {train_loss:.4f}')
-        time.sleep(0.03)
 
         net.eval()
         test_loss = 0.0
@@ -70,13 +68,10 @@ def train(net, train_dataloader, valid_dataloader, device, num_epoch, lr):
                 test_loss += loss.item()
 
             test_loss = test_loss / len(valid_dataloader)
-            time.sleep(0.03)
             print(f'Epoch [{epoch + 1}/{num_epoch}],Test Loss: {test_loss:.4f}')
-            time.sleep(0.03)
         if test_loss < best_loss:
             best_loss = test_loss
             torch.save(net.state_dict(), '../save_model/segment_model.pth')
-    time.sleep(0.03)
     print(f"best loss: {best_loss:.4f}")
 
     return net
