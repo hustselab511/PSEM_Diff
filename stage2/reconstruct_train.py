@@ -14,7 +14,6 @@ from stage1 import unets
 from stage2.rec_unets import AutoSemanticSegment
 
 # ——————————————————————————————————————————————————————————————
-# 参数设定
 params_list = {}
 
 params_list['num_epoch'] = 5
