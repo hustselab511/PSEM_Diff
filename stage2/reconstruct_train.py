@@ -89,7 +89,7 @@ def train(net, train_dataloader, valid_dataloader, device, num_epoch, lr):
             bcg, ecg = bcg.to(device), ecg.to(device)
             _, _, _, _, _, _, ecg_attn1, ecg_attn2, ecg_attn3, ecg_attn4 = segment_model.forward_attention(ecg)
             bcg_rec, bcg_feature, _, _, _, _, _, bcg_attn1, bcg_attn2, bcg_attn3, bcg_attn4 = net.get_features(bcg)
-            loss1 = criterion1(bcg_rec, bcg)  # + criterion1(make_energy_seq(bcg_feature), make_energy_seq(ecg)) * 0.0001  # 添加能量一致性约束 损失项
+            loss1 = criterion1(bcg_rec, bcg)
             loss2 = criterion2(ecg_attn1, bcg_attn1) + criterion2(ecg_attn2, bcg_attn2) + criterion2(ecg_attn3, bcg_attn3) + criterion2(ecg_attn4, bcg_attn4)
             loss = loss1 + loss2 * 10
             optimizer.zero_grad()
@@ -110,7 +110,7 @@ def train(net, train_dataloader, valid_dataloader, device, num_epoch, lr):
                 bcg, ecg = bcg.to(device), ecg.to(device)
                 _, _, _, _, _, _, ecg_attn1, ecg_attn2, ecg_attn3, ecg_attn4 = segment_model.forward_attention(ecg)
                 bcg_rec, _, _, _, _, _, _, bcg_attn1, bcg_attn2, bcg_attn3, bcg_attn4 = net.get_features(bcg)
-                loss1 = criterion1(bcg_rec, bcg)  # + criterion1(make_energy_seq(bcg_rec), make_energy_seq(ecg)) * 0.0001
+                loss1 = criterion1(bcg_rec, bcg)
                 loss2 = criterion2(ecg_attn1, bcg_attn1) + criterion2(ecg_attn2, bcg_attn2) + criterion2(ecg_attn3, bcg_attn3) + criterion2(ecg_attn4, bcg_attn4)
                 loss = loss1 + loss2 * 10
                 test_loss += loss.item()
