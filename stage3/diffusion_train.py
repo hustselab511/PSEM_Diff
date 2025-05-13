@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     train_loader = DataLoader(TensorDataset(ecg_data, bcg_data), batch_size=batch_size, shuffle=True, drop_last=False)
     model = VAR()
-    model = train_VAR(
+    model = train_Diff(
         model=model,
         train_loader=train_loader,
         num_epochs=params_list['task_epoch'],
