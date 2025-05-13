@@ -428,6 +428,6 @@ def train_Diff(*, model, train_loader, num_epochs=5, lr=1e-3, device='cpu'):
         print(f'Total_Loss: {total_loss:.6f}, Avg_Batch_Loss: {total_loss / batches:.6f}')
 
         if total_loss / batches <= best_loss:
-            torch.save(model.cpu().eval(), params_list['var_model_save_path'])
+            torch.save(model.cpu().eval().state_dict(), params_list['var_model_save_path'])
             best_loss = total_loss / batches
     return model.cpu()
