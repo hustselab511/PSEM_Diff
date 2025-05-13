@@ -405,8 +405,7 @@ class VAR(nn.Module):
         return ecg_pred
 
 
-# 扩散对齐任务
-def train_VAR(*, model, train_loader, num_epochs=5, lr=1e-3, device='cpu'):
+def train_Diff(*, model, train_loader, num_epochs=5, lr=1e-3, device='cpu'):
     optimizer = optim.Adam(model.parameters(), lr=lr)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=params_list['task_scheduler_step_size'], gamma=params_list['task_scheduler_gamma'])
     best_loss = 999999.0
