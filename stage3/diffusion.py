@@ -425,9 +425,7 @@ def train_Diff(*, model, train_loader, num_epochs=5, lr=1e-3, device='cpu'):
             optimizer.step()
             optimizer.zero_grad()
         scheduler.step()
-        time.sleep(0.03)
-        print(f'Stage 2: Total_Loss: {total_loss:.6f}, Avg_Batch_Loss: {total_loss / batches:.6f}')
-        time.sleep(0.03)
+        print(f'Total_Loss: {total_loss:.6f}, Avg_Batch_Loss: {total_loss / batches:.6f}')
 
         if total_loss / batches <= best_loss:
             torch.save(model.cpu().eval(), params_list['var_model_save_path'])
