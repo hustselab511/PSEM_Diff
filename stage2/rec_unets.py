@@ -214,52 +214,6 @@ def get_Attn_Unet(img_ch=1, output_ch=1):
     return Attn_UNet(img_ch=img_ch, output_ch=output_ch)
 
 
-class DeformableConv1d(nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0):
-        super(DeformableConv1d, self).__init__()
-        self.kernel_size = kernel_size
-        self.stride = stride
-        self.padding = padding
-        self.conv_offset = nn.Conv1d(in_channels, out_channels * 2, kernel_size, stride, padding)
-        self.conv = nn.Conv1d(in_channels, out_channels, kernel_size, stride, padding)
-
-    def forward(self, x):
-        offset = self.conv_offset(x)
-        grid = self._create_grid(offset)
-        x_deformed = F.grid_sample(x.unsqueeze(2), grid.unsqueeze(2), mode='bilinear', align_corners=True)
-        output = self.conv(x_deformed.squeeze(-1))
-        return output
-
-    def _create_grid(self, offset):
-        N, _, L = offset.size()
-        grid = torch.arange(L, device=offset.device).float().view(1, L)  # (1, L)
-        grid = grid.expand(N, -1)  # (N, L)
-        offset = offset.permute(0, 2, 1).contiguous()  # (N, L, 2*out_channels)
-        offset = offset.view(N, L, 2, -1)  # (N, L, 2, out_channels)
-        offset = offset[..., :2]  # (N, L, 2, out_channels)
-        grid = grid.unsqueeze(-1) + offset.sum(dim=-1)  # (N, L, 1)
-        grid = grid / (L - 1) * 2 - 1
-        return grid
-
-
-class BCGRecDecoder(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.deform_conv1 = DeformableConv1d(1, 8, kernel_size=3, padding=1)
-        self.deform_conv2 = DeformableConv1d(8, 8, kernel_size=3, padding=1)
-        self.deform_conv3 = DeformableConv1d(8, 8, kernel_size=3, padding=1)
-        self.deform_conv4 = DeformableConv1d(8, 1, kernel_size=3, padding=1)
-        self.layer_norm = LayerNorm()
-
-    def forward(self, data):
-        data = self.deform_conv1(data)
-        data = self.deform_conv2(data)
-        data = self.deform_conv3(data)
-        data = self.deform_conv4(data)
-        data = self.layer_norm(data)
-        return data
-
-
 class LayerNorm(nn.Module):
     def __init__(self):
         super().__init__()
@@ -273,7 +227,7 @@ class AutoSemanticSegment(nn.Module):
     def __init__(self):
         super().__init__()
         self.encoder = Attn_UNet(img_ch=1, output_ch=1)
-        self.decoder = BCGRecDecoder()
+        self.decoder = Attn_UNet(img_ch=1, output_ch=1)
 
     def get_features(self, bcg):
         bcg_feature = self.encoder(bcg)
