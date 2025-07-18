@@ -10,25 +10,6 @@ from tqdm import tqdm
 
 from stage2 import rec_unets
 
-# random seed
-seed = 42
-torch.manual_seed(seed)
-torch.cuda.manual_seed(seed)
-torch.cuda.manual_seed_all(seed)
-np.random.seed(seed)
-random.seed(seed)
-torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = False
-
-# ——————————————————————————————————————————————————————————————
-params_list = {}
-params_list['task_train'] = True
-params_list['task_epoch'] = 5
-params_list['task_lr'] = 0.001
-params_list['task_scheduler_step_size'] = 5
-params_list['task_scheduler_gamma'] = 0.7
-params_list['var_model_save_path'] = '../save_model/PSEM_diff_model.pth'
-
 
 def flatten_data(data):
     return data.reshape(data.shape[0] * data.shape[1], data.shape[-1])
