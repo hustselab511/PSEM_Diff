@@ -11,26 +11,6 @@ from tqdm import tqdm
 
 import unets
 
-# ——————————————————————————————————————————————————————————————
-params_list = {}
-
-params_list['num_epoch'] = 20
-params_list['lr'] = 0.001
-params_list['batch_size'] = 16
-params_list['task_scheduler_step_size'] = 5
-params_list['task_scheduler_gamma'] = 0.8
-
-# random seed
-seed = 42
-torch.manual_seed(seed)
-torch.cuda.manual_seed(seed)
-torch.cuda.manual_seed_all(seed)
-np.random.seed(seed)
-random.seed(seed)
-torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = False
-
-
 def train(net, train_dataloader, valid_dataloader, device, num_epoch, lr):
     print('training on:', device)
     net.to(device)
