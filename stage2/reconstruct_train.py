@@ -13,24 +13,6 @@ from tqdm import tqdm
 from stage1 import unets
 from stage2.rec_unets import AutoSemanticSegment
 
-# ——————————————————————————————————————————————————————————————
-params_list = {}
-
-params_list['num_epoch'] = 5
-params_list['lr'] = 0.0001
-params_list['batch_size'] = 32
-params_list['task_scheduler_step_size'] = 5
-params_list['task_scheduler_gamma'] = 0.8
-
-seed = 42
-torch.manual_seed(seed)
-torch.cuda.manual_seed(seed)
-torch.cuda.manual_seed_all(seed)
-np.random.seed(seed)
-random.seed(seed)
-torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = False
-
 
 def init_xavier(m):
     if type(m) == nn.Linear:
