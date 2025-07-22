@@ -1,43 +1,6 @@
 import numpy as np
 from scipy.signal import butter, filtfilt
 
-
-def zero_phase_butter_worth_filter(data, low_cut=3, high_cut=12, fs=125, order=4):
-    """
-    Apply a zero-phase Butterworth bandpass filter to input data using forward and reverse directions.
-
-    Parameters:
-        data (np.ndarray): Input signal data to be filtered (1D array)
-        low_cut (float): Lower cutoff frequency in Hz (default: 3Hz)
-        high_cut (float): Upper cutoff frequency in Hz (default: 12Hz)
-        fs (float): Sampling frequency in Hz (default: 125Hz)
-        order (int): Order of the Butterworth filter (default: 4)
-
-    Returns:
-        np.ndarray: Filtered data with zero phase distortion
-
-    Processing Steps:
-        1. Calculate Nyquist frequency
-        2. Normalize cutoff frequencies to Nyquist range [0, 1]
-        3. Design Butterworth bandpass filter coefficients
-        4. Apply forward-reverse filtering using filtfilt()
-    """
-    # Calculate Nyquist frequency (half of sampling frequency)
-    nyquist_freq = 0.5 * fs
-
-    # Normalize cutoff frequencies to Nyquist range [0, 1]
-    low = low_cut / nyquist_freq
-    high = high_cut / nyquist_freq
-
-    # Design Butterworth bandpass filter coefficients
-    [b, a] = butter(order, [low, high], btype='bandpass', analog=False)
-
-    # Apply zero-phase filtering using forward and reverse directions
-    filtered_data = filtfilt(b, a, data, axis=0)
-
-    return filtered_data
-
-
 def rms_filter(signal, window_size=200):
     """
     Calculate Root Mean Square (RMS) sequence using sliding symmetric window (loop implementation).
@@ -102,3 +65,4 @@ def discard_near_threshold(rms, thresholds, discard_seconds=1, fs=125):
         discard_mask[start:end] = True
 
     return discard_mask
+
