@@ -30,14 +30,14 @@ def rms_filter(signal, window_size=200):
     return rms_signal / np.max(rms_signal)
 
 
-def discard_near_threshold(rms, thresholds, discard_seconds=1, fs=125):
+def discard_near_threshold(rms, thresholds, discard_seconds=15, fs=125):
     """
     Discard RMS points near threshold-exceeding regions with specified duration.
 
     Parameters:
         rms (np.ndarray): Normalized RMS sequence in range [0, 1]
         thresholds (tuple): Lower and upper bounds (low, high) for valid RMS range
-        discard_seconds (int): Time duration around threshold crossings to discard (default: 1)
+        discard_seconds (int): Time duration around threshold crossings to discard (default: 15)
         fs (int): Sampling frequency in Hz (default: 125)
 
     Returns:
