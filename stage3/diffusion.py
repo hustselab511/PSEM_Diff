@@ -384,31 +384,3 @@ class VAR(nn.Module):
         interpolate_bcg_down1 = self.var_bcg_diffusion1.denoised_valid(bcg_down_sampling_list[2])  # high
         ecg_pred = self.var_ecg_decoder(interpolate_bcg_down1, interpolate_bcg_down2, interpolate_bcg_down3)
         return ecg_pred
-
-
-def train_Diff(*, model, train_loader, num_epochs=5, lr=1e-3, device='cpu'):
-    optimizer = optim.Adam(model.parameters(), lr=lr)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=params_list['task_scheduler_step_size'], gamma=params_list['task_scheduler_gamma'])
-    best_loss = 999999.0
-    for epoch in range(num_epochs):
-        print(f'------------- VAR Epoch {epoch + 1}/{num_epochs} -------------')
-        model = model.to(device).train()
-        total_loss = 0
-        batches = 0
-        for (batch_ecg_sample, batch_bcg_sample) in tqdm(train_loader, desc='Stage2 (2/2)'):
-            batch_ecg_sample = batch_ecg_sample.to(device)
-            batch_bcg_sample = batch_bcg_sample.to(device)
-
-            loss = model.get_var_loss(batch_bcg_sample, batch_ecg_sample)
-            total_loss += loss.item()
-            batches += 1
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
-        scheduler.step()
-        print(f'Total_Loss: {total_loss:.6f}, Avg_Batch_Loss: {total_loss / batches:.6f}')
-
-        if total_loss / batches <= best_loss:
-            torch.save(model.cpu().eval().state_dict(), params_list['var_model_save_path'])
-            best_loss = total_loss / batches
-    return model.cpu()
